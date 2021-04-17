@@ -110,7 +110,7 @@ loop do
 
     loop do
       prompt("Choose one: #{VALID_CHOICES.join(',  ')}")
-      choice = gets.chomp.downcase.to_sym
+      choice = gets.chomp.downcase.strip.to_sym
       output_spaces(1)
 
       if valid_move?(choice)

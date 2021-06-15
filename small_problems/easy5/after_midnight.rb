@@ -1,3 +1,4 @@
+require 'pry'
 # Part 1
 
 # Write a method that takes a time represented as the number of minutes
@@ -62,7 +63,7 @@ def time_of_day(delta_minutes)
   hours, minutes = delta_minutes.divmod(MINUTES_PER_HOUR)
   format('%02d:%02d', hours, minutes)
 end
-=end
+
 #_______________________________________________________________________________
 # Part 2
 
@@ -113,5 +114,57 @@ def before_midnight(time_str)
   delta_minutes
 end
 
+=end
 
 
+
+
+
+
+
+# input: integer
+# output: string
+
+# rules:
+#   - positive number - time after midnight
+#   - negative number - time before midnight
+#   - returns time of day in 24 hour format(hh:mm)
+#   - should take any integer input
+#   - do no use Date and Time classes
+
+
+# DataStructures/Algorithm
+# - take number
+# - get absolute value of number 
+# - figure out hours before or after midnight
+# - return string format of number
+
+
+MINUTES_PER_DAY = 1440
+
+def time_of_day(time)
+    normalized_time = time.abs  
+  
+    while normalized_time > MINUTES_PER_DAY
+      normalized_time -= MINUTES_PER_DAY   
+    end
+    
+    if time < 0
+      normalized_time = MINUTES_PER_DAY - normalized_time
+    end
+    
+    hours, minutes = normalized_time.divmod(60)
+    
+    "#{format("%02d", hours)}:#{format("%02d", minutes)}"
+end
+
+
+
+
+p time_of_day(0)# == "00:00"
+p time_of_day(-3)# == "23:57"
+p time_of_day(35)# == "00:35"
+p time_of_day(-1437)# == "00:03"
+p time_of_day(3000)# == "02:00"
+p time_of_day(800)# == "13:20"
+p time_of_day(-4231)# == "01:29"

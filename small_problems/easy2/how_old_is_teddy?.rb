@@ -1,16 +1,28 @@
-# Build a program that randomly generates and prints Teddy's age. To get the
-# age, you should generate a random number between 20 and 200.
+# randomly generate age between 20 and 200
+# output: string  (teddys age)
 
-def get_teddys_age(name = "Teddy")
-  age = (20..200).to_a.sample
-  puts "#{name} is #{age} years old!"
+=begin
+def how_old_is_teddy
+  age_range = 20..200
+  teddys_age = rand(age_range)
+  "Teddy is #{teddys_age} years old!"  
 end
 
-get_teddys_age("Tommy")
+p how_old_is_teddy
+=end
 
+# Further Exploration___________________________________________________________
+# get name
+# print age for that person
+# set default name to "teddy"
 
-#______________launch_solution__________________________
+puts "What's that person't name?"
+name = gets.chomp
 
-age = rand(20..200)
-puts "Teddy is #{age} years old!"
+def how_old_is_teddy(name = "Teddy")
+  age_range = 20..200
+  teddys_age = rand(age_range)
+  "#{name} is #{teddys_age} years old!"  
+end
 
+p how_old_is_teddy(name)

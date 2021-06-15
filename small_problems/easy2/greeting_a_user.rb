@@ -2,26 +2,30 @@
 # the user. If the user writes "name!" then the computer yells back to the
 # user.
 
+=begin
 
-print "What is your name? "
+puts "What is your name?" 
 name = gets.chomp
 
-if name.match('!')
-  name.delete!("!")
-  puts "HELLO #{name.upcase}. WHY ARE WE SCREAMING?"
-else
+
+if name[-1] == '!'
+  puts "HELLO #{name.upcase} WHY ARE WE SCREAMING?"
+else 
   puts "Hello #{name}."
 end
 
+=end
 
-#________________launch_solution___________________
+#launch_solution________________________________________________________________
 
-print 'What is your name? '
-name = gets.chomp
+
+puts "What is your name?" 
+name = gets.chomp!
+
 
 if name[-1] == '!'
-  name = name.chop
+  name.chop!
   puts "HELLO #{name.upcase}. WHY ARE WE SCREAMING?"
-else
+else 
   puts "Hello #{name}."
 end

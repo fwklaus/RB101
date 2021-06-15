@@ -11,15 +11,8 @@ end
 
 odd_arr.each{|num| puts num}
 
-#____________launch_solution_____________________
 
-value = 1
-while value <= 99
-  puts value
-  value += 2
-end
-
-#____________repeat_with_different_techniques______
+# Further Exploration___________________________________________________________
 
 
 puts (1..99).select(&:odd?)

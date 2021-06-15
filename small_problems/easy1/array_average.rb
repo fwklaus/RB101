@@ -1,26 +1,32 @@
-# Write a method that takes one argument, an array containing integers, and
-# returns the average of all numbers in the array. The array will never be
-# empty and the numbers will always be positive integers. Your result should
-# also be an integer.
+# Input: array (containing integers)
+# Output: integer (average of all numbers in the array)
 
- def average(arr = [1])
-   total = 0
-   arr.map{|ele| total += ele}
-   avg = total / arr.size
+# Rules:
+#   -Explicit: 
+#       -takes array containing integers
+#       -returns average of numbers in the array - integer
+#       -array will never be empty
+#       -numbers will always be positive integers
+=begin
+def average(arr)
+  arr.reduce(&:+) / arr.length
 end
-
 
 
 puts average([1, 6]) == 3 # integer division: (1 + 6) / 2 -> 3
 puts average([1, 5, 87, 45, 8, 8]) == 25
 puts average([9, 47, 23, 95, 16, 52]) == 40
 
-# The tests above should print true.
+=end
+# Further Exploration___________________________________________________________
+# output: float
 
-#__________launch_solution____________________________
 
-def average(numbers)
-  sum = numbers.reduce { |sum, number| sum + number }
-  sum / numbers.count
+def average(arr)
+  (arr.reduce(&:+) / arr.length).to_f
 end
 
+
+puts average([1, 6]) == 3 # integer division: (1 + 6) / 2 -> 3
+puts average([1, 5, 87, 45, 8, 8]) == 25
+puts average([9, 47, 23, 95, 16, 52]) == 40

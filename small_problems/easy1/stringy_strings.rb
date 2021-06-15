@@ -1,41 +1,74 @@
-# Write a method that takes one argument, a positive integer, and returns a
-# string of alternating 1s and 0s, always starting with 1. The length of the
-# string should match the given integer.
+# input: integer
+# output: string(alternating 1s and 0s)
 
-def stringy(int, ord = 1)
-  str = ''
-  int.times do |x|
-    if ord == 0
-      str << '1' if x.odd?
-      str << '0' if x.even?
-    else
-      str << '0' if x.odd?
-      str << '1' if x.even?
-    end
-  end 
-  str
+# Rules:
+#   -Explicit:
+#       - takes a positive integer
+#       - returns string of alternating 1s and 0s
+#       - always starts with 1
+#       - length of the string should match the given integer
+
+## DataStructures/Algorithms:
+# -take integer(n)
+# -initialixe string
+# -n times, print a character(times)
+#    -if current iteration is even append '1' to string
+#    -else append '0' to string
+
+=begin
+
+# times
+def stringy(n)
+  string = ''
+  n.times do |char|
+    char.even? ? string << '1' : string << '0'
+  end
+  string
 end
 
-puts stringy(6, 0) == '101010'
+puts stringy(6) == '101010'
 puts stringy(9) == '101010101'
 puts stringy(4) == '1010'
 puts stringy(7) == '1010101'
 
-# The tests above should print true
 
-#_____________________launch_solution______________
-
-=begin
-def stringy(size)
-  numbers = []
-
-  size.times do |index|
-    number = index.even? ? 1 : 0
-    numbers << number
+#upto
+def stringy(n)
+  string = ''
+  1.upto(n) do |char|
+    char.odd? ? string << '1' : string << '0'
   end
-
-  numbers.join
+  string
 end
 
+puts stringy(6)# == '101010'
+# puts stringy(9) == '101010101'
+# puts stringy(4) == '1010'
+# puts stringy(7) == '1010101'
 =end
 
+# Further Exploration___________________________________________________________
+
+# stringy takes additional argument - defaults to 1
+#    -if method is called with argument set to 0
+#              -string of alternating 0s and 1s
+#
+
+
+def stringy(n, start_value = 1)
+  arr = []
+  if start_value == 1
+    start_value.upto(n){ |char| char.odd? ? arr << 1 : arr << 0 }
+  else
+    start_value.upto(n-1){ |char| char.odd? ? arr << 1 : arr << 0 }
+  end
+  arr.join
+end
+
+
+
+puts stringy(6) == '101010'
+puts stringy(6,0) == '010101'
+puts stringy(9) == '101010101'
+puts stringy(4) == '1010'
+puts stringy(7) == '1010101'

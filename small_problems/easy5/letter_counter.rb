@@ -1,8 +1,5 @@
 # Part 1)
 =begin
-# Write a method that takes a string with one or more space separated words and
-# returns a hash that shows the number of words of different sizes.
-
 
 def word_sizes(string)
   str_length_num = {}
@@ -32,7 +29,6 @@ def word_sizes(words_string)
   end
   counts
 end
-=end
 #_______________________________________________________________________________
 # Part 2)
 
@@ -68,3 +64,66 @@ def word_sizes(words_string)
   end
   counts
 end
+
+
+
+# input: string
+# output: hash
+
+# rules:
+#   - takes string - contains space seperated words
+#   - returns hash - keys: word sizes, values: frequency
+#   - words consist of any string of characters that do no include a space
+
+
+# take word string
+# initialize empty hash
+# split string to array at empty spaces
+# iterate over array
+     # if word_szs includes word length increment value for size
+     # otherwise initialize new key value pair
+# return hash
+
+
+def word_sizes(str)
+  wrd_szs = {}
+  
+  str.split(' ').each do |word|
+     if wrd_szs.include?(word.size)
+       wrd_szs[word.size] += 1
+     else
+       wrd_szs[word.size] = 1
+    end
+  end
+  
+  wrd_szs
+end
+
+
+
+p word_sizes('Four score and seven.') == { 3 => 1, 4 => 1, 5 => 1, 6 => 1 }
+p word_sizes('Hey diddle diddle, the cat and the fiddle!') == { 3 => 5, 6 => 1, 7 => 2 }
+p word_sizes("What's up doc?") == { 6 => 1, 2 => 1, 4 => 1 }
+p word_sizes('') == {}
+
+=end
+
+# part 2
+
+
+
+def word_sizes(str)
+  wrd_szs = Hash.new(0)
+  
+  str.split(' ').each do |word|
+    word.delete!('^A-Za-z ')
+    wrd_szs[word.size] += 1
+  end
+  
+  wrd_szs
+end
+
+p word_sizes('Four score and seven.') == { 3 => 1, 4 => 1, 5 => 2 }
+p word_sizes('Hey diddle diddle, the cat and the fiddle!') == { 3 => 5, 6 => 3 }
+p word_sizes("What's up doc?") == { 5 => 1, 2 => 1, 3 => 1 }
+p word_sizes('') == {}

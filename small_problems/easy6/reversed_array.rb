@@ -101,7 +101,7 @@ end
 #     - break if arr[count] == nil
 #   - end loop
 #   - return new array
-
+=begin
 
 def reverse(arr)
   new_arr = []
@@ -138,3 +138,75 @@ def reverse(array)
   array.reverse_each { |element| result_array << element }
   result_array
 end
+
+
+# Part 2
+
+# input: array
+# output: new array
+
+# rules:
+#   -explicit:
+#       - takes an array
+#       - returns new array
+#              - elements of original list in reverse order
+#              - do not modify original array
+#       - do not use Array#reverse or Array#reverse!, or previous exercise method
+
+
+# DS/Alg:
+# array
+# slice shortcut synax
+# loop
+#
+# start loop
+# assign last element of arr to new array
+# increment count
+# assign second to last element of arr to new arr...
+# etc
+
+def reverse(arr)
+  new_arr = []
+  count = 1
+  loop do
+    break if count > arr.size 
+    new_arr << arr[-count]
+    count += 1
+  end
+  new_arr
+end
+
+
+
+p reverse([1,2,3,4]) == [4,3,2,1]          # => true
+p reverse(%w(a b e d c)) == %w(c d e b a)  # => true
+p reverse(['abc']) == ['abc']              # => true
+p reverse([]) == []                        # => true
+
+p list = [1, 3, 2]                      # => [1, 3, 2]
+p new_list = reverse(list)              # => [2, 3, 1]
+p list.object_id != new_list.object_id  # => true
+p list == [1, 3, 2]                     # => true
+p new_list == [2, 3, 1]                 # => true
+
+=end
+
+# Further Exploration
+# use either inject or each_with_obect
+
+def reverse(arr)
+  arr.inject([]) { |memo, el| memo.unshift(el)}
+end
+
+p reverse([1,2,3,4])# == [4,3,2,1]          # => true
+# p reverse(%w(a b e d c)) == %w(c d e b a)  # => true
+# p reverse(['abc']) == ['abc']              # => true
+# p reverse([]) == []                        # => true
+
+# p list = [1, 3, 2]                      # => [1, 3, 2]
+# p new_list = reverse(list)              # => [2, 3, 1]
+# p list.object_id != new_list.object_id  # => true
+# p list == [1, 3, 2]                     # => true
+# p new_list == [2, 3, 1]                 # => true
+
+

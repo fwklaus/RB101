@@ -38,7 +38,7 @@
 #      On each line we print interpolated string
 #          - string contains ((spaces * (n - count), and  (stars * count)
 #     - break if count > n
-
+=begin
 
 
 def triangle(n)
@@ -95,3 +95,71 @@ triangle(9)
 =end
 
 
+
+# input: integer
+# output: string representation of integer(right triangle)
+
+# rules:
+#   -explicit:
+#       -takes positive integer(n)
+#       - displays right triangle 
+#              -sides have (n) stars
+#       -hypotenuse goes from bottom left to top right
+
+# def triangle(n)
+#   1.upto(n) do |num|
+#     puts (' ' * (n - num)) + ('*' * num )
+#   end
+# end
+  
+  
+# triangle(5)
+
+#     *
+#    **
+#   ***
+#  ****
+# *****
+
+
+
+# triangle(9)
+
+#         *
+#        **
+#       ***
+#      ****
+#     *****
+#    ******
+#   *******
+#  ********
+# *********
+
+# further exploration
+
+
+# upside down
+
+# take symbol
+def triangle(n, direction = :top_left)
+  case direction
+  when :top_left
+    (n + 1).times { |num| puts '*' * num }
+  when :bottom_left
+    (n).downto(1) { |num| puts '*' * num}
+  when :top_right
+    1.upto(n) do |num|
+      puts (' ' * (n - num)) + ('*' * num )
+    end
+  when :bottom_right
+    0.upto(n) do |num|
+      puts (' ' * num) + ('*' * (n - num) )
+    end
+  end
+end
+  
+  
+triangle(5, :bottom_left)
+
+
+triangle(9, :top_right)

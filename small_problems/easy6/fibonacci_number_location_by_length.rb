@@ -31,7 +31,7 @@
 #      - count += 1
 #   - break out of loop when next number.to_s.length = int
 
-
+=begin
 def find_fibonacci_index_by_length(int)
   count = 2
   first_num = 1
@@ -73,3 +73,45 @@ def find_fibonacci_index_by_length(number_digits)
 
   index
 end
+=end
+
+
+# input: integer
+# output: integer
+
+# rules:
+#   explicit:
+#      - takes integer - number of digits
+#      - returns the index of the first fibonacci number of specified digit length
+
+# DS/Alg:
+
+# sequence: # 1 1 2 3 5 8 13 21 34 55 89 144
+#  - next number in sequence equals previous number plus last number
+#  - first digit is 1
+#  - second digit is 1
+
+
+
+def find_fibonacci_index_by_length(digit_size)
+  count = 2
+  first_digit = 1
+  second_digit = 1
+  loop do
+    break if second_digit.to_s.size == digit_size
+    count += 1
+    last_digit = first_digit + second_digit
+    first_digit = second_digit
+    second_digit = last_digit
+  end
+  count
+end
+
+
+
+p find_fibonacci_index_by_length(2) == 7          # 1 1 2 3 5 8 13
+p find_fibonacci_index_by_length(3) == 12         # 1 1 2 3 5 8 13 21 34 55 89 144
+p find_fibonacci_index_by_length(10) == 45
+p find_fibonacci_index_by_length(100) == 476
+p find_fibonacci_index_by_length(1000) == 4782
+p find_fibonacci_index_by_length(10000) == 47847

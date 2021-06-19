@@ -30,7 +30,7 @@
 #      - if array length is odd, append middle element to first_half array
 #  - assign first_half array to first position of empty overall array, and second_half
 #    array to second position of empty overall array
-
+=begin
 def halvsies(arr)
   nested_arr, first_half, second_half = [], [], []
   index = 0
@@ -59,3 +59,40 @@ def halvsies(array)
   second_half = array.slice(middle, array.size - middle)
   [first_half, second_half]
 end
+=end
+# input: array
+# output: two arrays (pair of nested arrays)
+
+# rules:
+#  -explicit:
+#     -takes an array
+#     -returns two arrays(pair of nested arrays)
+#             -first contains first half of original
+#             -second contains second half of original
+#     -if array contains odd number of elements
+#             -middle element should be in first half array
+#  -if array length is odd, set first half equal to size / 2
+#  -if array length is even, set first half equal to size -1 / 2
+#  -second half is whatever is left
+
+
+def halvsies(arr)
+  first_half = []
+  second_half = []
+  half = arr.size / 2
+  
+  if arr.size.even?
+    first_half = arr[..half - 1]
+    second_half = arr[half..]
+  else
+    first_half = arr[..half]
+    second_half = arr[half + 1..]
+  end
+  [first_half, second_half]
+end
+
+
+p halvsies([1, 2, 3, 4]) == [[1, 2], [3, 4]]
+p halvsies([1, 5, 2, 4, 3]) == [[1, 5, 2], [4, 3]]
+p halvsies([5]) == [[5], []]
+p halvsies([]) == [[], []]

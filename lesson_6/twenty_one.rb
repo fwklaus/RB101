@@ -1,4 +1,4 @@
-require "pry-byebug"
+CARD_POSITION = 0
 CARD_VALUES = { 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9,
                 10 => 10, "Jack" => 10, "Queen" => 10, "King" => 10,
                 "Ace" => 11 }
@@ -54,11 +54,19 @@ def obfuscate_hand(cards)
   hand_copy
 end
 
+def game_over_joiner(hand)
+  hand.map { |sub| sub.join(' of ') }
+end
+
 def joiner(hand, current_player, game_over = false)
   current_hand = hand[current_player]
 
   if current_player == "Dealer" && game_over == false
     current_hand = obfuscate_hand(current_hand)
+  end
+
+  if game_over == true
+    current_hand = game_over_joiner(current_hand)
   end
 
   if current_hand.size <= 2
@@ -73,9 +81,31 @@ def joiner(hand, current_player, game_over = false)
 end
 
 def display_cards(hand, game_over = false)
+  hnd = working_hand(hand)
   system 'clear'
-  puts "Dealer has: #{joiner(hand, 'Dealer', game_over)}"
-  puts "You have: #{joiner(hand, 'Player')}"
+
+  if game_over == true
+    puts "Dealer has: #{joiner(hand, 'Dealer', game_over)}"
+    puts "You have: #{joiner(hand, 'Player', game_over)}"
+  else
+    puts "Dealer has: #{joiner(hnd, 'Dealer', game_over)}"
+    puts "You have: #{joiner(hnd, 'Player', game_over)}"
+  end
+end
+
+# the array that is passed around
+def working_hand(display_hand)
+  players = ["Player", "Dealer"]
+  working_hand = {}
+
+  players.each do |key|
+    working_hand[key] = display_hand[key].map do |sub_array|
+      sub_array.select.with_index { |_el, idx| idx == 0 }
+    end
+  end
+
+  working_hand.values.map(&:flatten!)
+  working_hand
 end
 
 def initialize_deck
@@ -124,18 +154,22 @@ def deal_card(dek, hnd, current_plyr)
   dek[card].delete(suit)
 
   if hnd[current_plyr].nil?
-    hnd[current_plyr] = [card]
+    hnd[current_plyr] = [[card, suit]]
   else
-    hnd[current_plyr] << card
+    hnd[current_plyr] << [card, suit]
   end
   hnd
 end
 
 def calculate_hand_total(hand, current_player)
   cards_arr = hand[current_player]
-  hand_total_with_ace11 = cards_arr.map { |card| CARD_VALUES[card] }.sum
+  working_arr = cards_arr.map do |sub_array|
+    sub_array.find { |el| el == sub_array[0] }
+  end
 
-  hand_total = cards_arr.map do |card|
+  hand_total_with_ace11 = working_arr.map { |card| CARD_VALUES[card] }.sum
+
+  hand_total = working_arr.map do |card|
     if card == "Ace" && hand_total_with_ace11 > 21
       1
     else
@@ -204,8 +238,8 @@ end
 def show_hands(cards, hand_value)
   system 'clear'
   prompt("Show hands...")
-  sleep(3)
-  prompt("Player's holding: #{joiner(cards, 'Player')}.
+  sleep(2)
+  prompt("Player's holding: #{joiner(cards, 'Player', true)}.
     Player has #{hand_value['Player']}")
   prompt("Dealer's holding: #{joiner(cards, 'Dealer', true)}.
     Dealer has #{hand_value['Dealer']}")
@@ -237,16 +271,15 @@ loop do
 
     # player turn
     loop do
+      prompt("Player turn...")
       current_player = switch_player(initial_player)
-      hit_or_stay = ''
       hand = hand_values[current_player]
       stay = false
 
       loop do
         loop do
           display_cards(cards)
-          hit_or_stay = player_turn
-          if hit_or_stay == "hit"
+          if player_turn == "hit"
             deal_card(deck, cards, current_player)
           else
             stay = true
@@ -260,49 +293,53 @@ loop do
           game_over = true
           busted = current_player.to_sym
           prompt("#{current_player} busts.")
-          display_cards(cards, game_over)
-          sleep(3)
+          sleep(2)
         end
         break
       end
       hand_values[current_player] = hand
       break
     end
-    break if game_over
 
+    # dealer turn
     loop do
-      current_player = switch_player(current_player)
-      stay = false
-      hand = hand_values[current_player]
-      sleep(2)
-
+      break if game_over
+      prompt("Dealer turn...")
+      
       loop do
-        loop do
-          break if busted?(hand) || stay
-          display_cards(cards)
+        current_player = switch_player(current_player)
+        hand = hand_values[current_player]
+        stay = false
+        sleep(2)
 
-          if dealer_turn(hand) == "hit"
-            deal_card(deck, cards, current_player)
-          else
-            stay = true
+        loop do
+          loop do
+            break if busted?(hand) || stay
+            display_cards(cards)
+
+            if dealer_turn(hand) == "hit"
+              deal_card(deck, cards, current_player)
+            else
+              stay = true
+              game_over = true
+            end
+
+            hand = calculate_hand_total(cards, current_player)
+            sleep(3)
           end
 
-          hand = calculate_hand_total(cards, current_player)
-          sleep(3)
+          if busted?(hand)
+            game_over = true
+            busted = current_player.to_sym
+            prompt("#{current_player} busts. ")
+            sleep(2)
+          end
+          break
         end
-
-        if busted?(hand)
-          game_over = true
-          busted = current_player.to_sym
-          prompt("#{current_player} busts. ")
-          display_cards(cards, game_over)
-        end
+        hand_values[current_player] = hand
         break
       end
-      hand_values[current_player] = hand
-      break
     end
-
     show_hands(cards, hand_values)
     result = determine_winner(hand_values, busted)
     declare_winner(result)
